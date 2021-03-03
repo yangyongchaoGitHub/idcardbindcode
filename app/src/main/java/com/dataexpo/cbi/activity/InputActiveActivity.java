@@ -35,10 +35,7 @@ import java.util.HashMap;
 
 import okhttp3.Call;
 
-import static com.dataexpo.cbi.activity.MainActivity.INPUT_TOO_LONG;
-import static com.dataexpo.cbi.common.Utils.INPUT_HAVE_NET_ADDRESS;
-import static com.dataexpo.cbi.common.Utils.INPUT_NULL;
-import static com.dataexpo.cbi.common.Utils.INPUT_SUCCESS;
+import static com.dataexpo.cbi.common.Utils.*;
 
 
 public class InputActiveActivity extends BascActivity implements View.OnClickListener, DecodeResultListener, TextWatcher {
@@ -90,7 +87,7 @@ public class InputActiveActivity extends BascActivity implements View.OnClickLis
     }
 
     private void initView() {
-        et_a_code = findViewById(R.id.et_a_code);
+        et_a_code = findViewById(R.id.et_qrcode);
         findViewById(R.id.btn_input_login_back).setOnClickListener(this);
         findViewById(R.id.tv_login_query).setOnClickListener(this);
         tv_version = findViewById(R.id.tv_version);

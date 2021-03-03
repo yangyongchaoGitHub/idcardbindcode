@@ -33,6 +33,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:name="com.dataexpo.cbi.MyApplication"
         android:theme="@style/AppTheme">
         <activity android:name="com.dataexpo.cbi.activity.CheckExpoId">
             <intent-filter>
@@ -50,5 +51,7 @@
         <activity android:name="com.dataexpo.cbi.UploadSuccessActivity"/>
         <activity android:name="com.dataexpo.cbi.activity.InputActiveActivity"/>
         <activity android:name="com.dataexpo.cbi.activity.MainActivity"/>
+        <activity android:name="com.dataexpo.cbi.activity.ScanCode"/>
+        <activity android:name="com.dataexpo.cbi.activity.BindIdCard"/>
     </application>
 </manifest>

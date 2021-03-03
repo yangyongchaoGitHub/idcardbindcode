@@ -11,7 +11,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@color/bg_color"
-        android:text="@string/input_active"
+        android:text="@string/scan"
         android:gravity="center"
         android:textColor="@color/bg_white"
         android:textSize="18dp"
@@ -34,50 +34,66 @@
         app:layout_constraintBottom_toBottomOf="@+id/tv_input_login_title"/>
 
     <TextView
-        android:id="@+id/tv_input_login_qrcode_text"
+        android:id="@+id/tv_user_info_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textSize="18dp"
-        android:textColor="@color/bg_black"
-        android:text="@string/input_active"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintVertical_bias="0.25"
-        app:layout_constraintTop_toTopOf="parent"/>
-
-    <EditText
-        android:id="@+id/et_qrcode"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:gravity="center"
-        android:background="@drawable/edittext_rect"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintWidth_percent="0.8"
-        app:layout_constraintHeight_percent="0.1"
-        app:layout_constraintVertical_bias="0.35"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        android:text="@string/name"
+        style="@style/userInfoText"
+        app:layout_constraintVertical_bias="0.1"/>
 
     <TextView
-        android:id="@+id/tv_version"
+        android:id="@+id/tv_user_info_name_value"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_user_info_name"
+        style="@style/userInfoValue"
+        app:layout_constraintVertical_bias="0.15"/>
+
+    <TextView
+        android:id="@+id/tv_user_info_card_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textSize="11dp"
-        android:textColor="@color/bg_black"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/tv_login_query"
+        android:layout_below="@+id/tv_user_info_name_value"
+        android:text="@string/idcard_name"
+        style="@style/userInfoText"
+        app:layout_constraintVertical_bias="0.3"
         />
 
     <TextView
-        android:id="@+id/tv_login_query"
+        android:id="@+id/tv_user_info_card_name_value"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@+id/tv_user_info_idcard"
+        style="@style/userInfoValue"
+        app:layout_constraintVertical_bias="0.35"
+        />
+
+    <TextView
+        android:id="@+id/tv_user_info_idcard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_user_info_name_value"
+        android:text="@string/idcard"
+        style="@style/userInfoText"
+        app:layout_constraintVertical_bias="0.5"
+        />
+
+    <TextView
+        android:id="@+id/tv_user_info_idcard_value"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@+id/tv_user_info_idcard"
+        style="@style/userInfoValue"
+        app:layout_constraintVertical_bias="0.55"
+        />
+
+
+    <TextView
+        android:id="@+id/tv_bind"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_alignParentBottom="true"
-        android:text="@string/query"
+        android:text="@string/bind"
         android:textColor="@color/bg_white"
         android:background="@color/bg_color"
         android:gravity="center"

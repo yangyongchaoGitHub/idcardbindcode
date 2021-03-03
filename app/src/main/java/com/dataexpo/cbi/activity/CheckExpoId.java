@@ -18,6 +18,7 @@ import com.dataexpo.cbi.common.Utils;
 import com.dataexpo.cbi.pojo.MsgBean;
 import com.google.gson.Gson;
 import com.idata.fastscandemo.R;
+import com.idata.ise.scanner.decoder.CamDecodeAPI;
 
 import java.util.HashMap;
 
@@ -36,6 +37,9 @@ public class CheckExpoId extends BascActivity implements View.OnClickListener {
 
     private boolean bSuccess = false;
     private boolean bResult = true;
+
+    private long exitTime = System.currentTimeMillis();
+    private int exitCount = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,7 +134,8 @@ public class CheckExpoId extends BascActivity implements View.OnClickListener {
 
                                 intent.putExtra("Expo_id", expoId);
                                 intent.putExtra("Add", address);
-                                intent.setClass(mContext, InputActiveActivity.class);
+                                intent.putExtra("expo_name", msgBean.msg);
+                                intent.setClass(mContext, ScanCode.class);
 
                                 startActivity(intent);
                                 Toast.makeText(mContext, "当前项目： " + msgBean.msg, Toast.LENGTH_LONG).show();
@@ -141,7 +146,6 @@ public class CheckExpoId extends BascActivity implements View.OnClickListener {
                                 intent.putExtra("address", address);
                                 CheckExpoId.this.setResult(1, intent);
                             }
-                            finish();
 
                         } else {
                             et_address.setText("");
@@ -187,5 +191,24 @@ public class CheckExpoId extends BascActivity implements View.OnClickListener {
             check();
         }
         return super.dispatchKeyEvent(event);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        //Log.i(TAG, "onKeyDown  status: " + mStatus + " --- " + keyCode);
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (System.currentTimeMillis() - exitTime < 2000) {
+                if (++exitCount == 3) {
+                    exitTime = System.currentTimeMillis();
+                    CheckExpoId.this.finish();
+                }
+            } else {
+                exitTime = System.currentTimeMillis();
+                exitCount = 0;
+            }
+            return false;
+        }
+
+        return super.onKeyDown(keyCode, event);
     }
 }

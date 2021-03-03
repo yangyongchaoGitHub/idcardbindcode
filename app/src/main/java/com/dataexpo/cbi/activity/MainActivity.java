@@ -63,12 +63,6 @@ public class MainActivity extends BascActivity implements View.OnClickListener {
     public static final int STATUS_INPUT_TEMPERATURE = 2;
     public static final int STATUS_INPUT_COMMIT = 3;
 
-    public static final int INPUT_SUCCESS = 0;
-    public static final int INPUT_HAVE_NET_ADDRESS = 1;
-    public static final int INPUT_ONLY_NUM = 2;
-    public static final int INPUT_CHECK_NET_ADDRESS = 3;
-    public static final int INPUT_NULL = 4;
-    public static final int INPUT_TOO_LONG = 5;
 
     SoundManager manager;
 
@@ -435,26 +429,6 @@ public class MainActivity extends BascActivity implements View.OnClickListener {
         });
 
         //initView();
-    }
-
-    public static int checkInput(String input) {
-        if (TextUtils.isEmpty(input)) {
-            return INPUT_NULL;
-        }
-
-        if (input.contains("http")) {
-            return INPUT_HAVE_NET_ADDRESS;
-        }
-
-        if (input.contains("www.")) {
-            return INPUT_HAVE_NET_ADDRESS;
-        }
-
-        if (input.length() > 50) {
-            return INPUT_TOO_LONG;
-        }
-
-        return INPUT_SUCCESS;
     }
 
     private static class MyHandler extends Handler{

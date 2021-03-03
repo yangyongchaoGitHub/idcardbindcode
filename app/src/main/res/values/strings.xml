@@ -13,7 +13,12 @@
     <string name="input_active">输入激活码</string>
     <string name="query">点击查询</string>
     <string name="scan">请扫码</string>
+    <string name="check_in">确认进入</string>
 
 
     <string name="digits_num">0123456789abcdefghijklmnopqrstuvwxyzQWERTYUIOPASDFGHJKLZXCVBNM</string>
+    <string name="bind">绑定</string>
+    <string name="name">姓名</string>
+    <string name="idcard">身份证</string>
+    <string name="idcard_name">身份证姓名</string>
 </resources>

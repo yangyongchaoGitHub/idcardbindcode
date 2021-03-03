@@ -25,6 +25,7 @@ public class Utils {
     public static final int INPUT_CHECK_NET_ADDRESS = 3;
     public static final int INPUT_NULL = 4;
     public static final int INPUT_NO_CHECK = 99;
+    public static final int INPUT_TOO_LONG = 5;
 
     static byte AESIV[] = ByteBuffer.allocate(16).array();
     static String algorithm = "AES";

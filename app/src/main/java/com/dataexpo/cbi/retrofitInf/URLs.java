@@ -8,7 +8,14 @@ public class URLs {
 
     // 登录
     //public static final String loginUrl = "login/login2m" + postfix;
-    public static final String VerifyExpo = baseUrl + "gate/verifyExpoById";
+    public static final String VerifyExpo = "gate/verifyExpoById";
+
+
+    //根据eucode获取用户数据
+    public static final String queryUserInfoUrl = "gate/findUserInfoByFileCode";
+
+    //绑定身份证到用户信息
+    public static final String bindIdCardToUserUrl = "gate/bindIdCardToUser";
 
 
 }

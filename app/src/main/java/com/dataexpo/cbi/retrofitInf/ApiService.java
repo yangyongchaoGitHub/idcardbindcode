@@ -1,6 +1,7 @@
 package com.dataexpo.cbi.retrofitInf;
 
 
+import com.dataexpo.cbi.pojo.ExpoInfo;
 import com.dataexpo.cbi.pojo.NetResult;
 import com.dataexpo.cbi.pojo.PdaUserInfo;
 
@@ -12,16 +13,20 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 
-import static com.dataexpo.cbi.retrofitInf.URLs.VerifyExpo;
+import static com.dataexpo.cbi.retrofitInf.URLs.*;
 
-public interface BomService {
+public interface ApiService {
     //获取项目数据
     @GET(VerifyExpo)
-    Call<NetResult<PdaUserInfo>> getBomList(@Query("expoId") int expoId);
+    Call<NetResult<ExpoInfo>> verifyExpo(@Query("expoId") int expoId);
 
-//    @GET(bomSeriesUrl)
-//    Call<NetResult<PdaBomSeriesVo>> getBomSeries(@Query("bomId") int bomId);
-//
+    @GET(queryUserInfoUrl)
+    Call<NetResult<PdaUserInfo>> queryUserInfo(@Query("expoId") int expoId, @Query("code") String code);
+
+    @GET(bindIdCardToUserUrl)
+    Call<NetResult<String>> bindIdCardToUser(@Query("uid") int uid, @Query("name") String name,
+                                                  @Query("idCard") String idCard);
+
 //    @GET(bomDeviceUrl)
 //    Call<NetResult<List<Device>>> getBomDevice(@Query("bomId") int bomId);
 //

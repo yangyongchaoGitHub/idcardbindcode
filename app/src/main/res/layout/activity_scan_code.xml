@@ -48,10 +48,11 @@
         app:layout_constraintTop_toTopOf="parent"/>
 
     <EditText
-        android:id="@+id/et_a_code"
+        android:id="@+id/et_qrcode"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:gravity="center"
+        android:inputType="number"
         android:background="@drawable/edittext_rect"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -60,6 +61,23 @@
         app:layout_constraintVertical_bias="0.35"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <ImageView
+        android:visibility="gone"
+        android:id="@+id/iv_success"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:padding="5dp"
+        android:src="@drawable/success"
+        android:layout_gravity="center"
+        app:layout_constraintWidth_percent="0.3"
+        app:layout_constraintHeight_percent="0.2"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.66"
+        />
 
     <TextView
         android:id="@+id/tv_login_query"
