@@ -1,0 +1,2 @@
+# PDARNA
+# idcardbindcode
