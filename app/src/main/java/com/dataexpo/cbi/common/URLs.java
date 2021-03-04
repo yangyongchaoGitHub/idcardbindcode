@@ -1,8 +1,8 @@
 package com.dataexpo.cbi.common;
 
 public class URLs {
-    //private static final String DOMAIN = "https://auth.dataexpo.com.cn/";
-    private static final String DOMAIN = "http://192.168.0.109:8090/";
+    private static final String DOMAIN = "https://auth.dataexpo.com.cn/";
+    //private static final String DOMAIN = "http://192.168.0.109:8090/";
 
     public static final String LOGIN = "https://actifchina.leoscn.com/api/index/qrVerify";
 

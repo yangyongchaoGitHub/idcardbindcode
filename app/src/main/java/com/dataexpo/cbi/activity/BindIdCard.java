@@ -442,19 +442,17 @@ public class BindIdCard extends BascActivity implements View.OnClickListener {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        tv_user_info_name_value.setText("");
-                        tv_user_info_idcard_value.setText("");
-                        tv_user_info_card_name_value.setText("");
-
                         if (result.getCode().equals(200)) {
                             Toast.makeText(mContext, "欢迎光临", Toast.LENGTH_SHORT).show();
 
                             Intent intent = getIntent();
                             intent.putExtra("position", "1");
+                            intent.putExtra("idcard", tv_user_info_idcard_value.getText().toString());
                             setResult(RESULT_OK, intent);
-
                         }
-
+                        tv_user_info_name_value.setText("");
+                        tv_user_info_idcard_value.setText("");
+                        tv_user_info_card_name_value.setText("");
                         BindIdCard.this.finish();
                     }
                 });

@@ -1,8 +1,8 @@
 package com.dataexpo.cbi.retrofitInf;
 
 public class URLs {
-    //public static final String baseUrl = "https://auth.dataexpo.com.cn/";
-    public static final String baseUrl = "http://192.168.0.109:8090/";
+    public static final String baseUrl = "https://auth.dataexpo.com.cn/";
+    //public static final String baseUrl = "http://192.168.0.109:8090/";
 
     //private static final String postfix = ".do";
 

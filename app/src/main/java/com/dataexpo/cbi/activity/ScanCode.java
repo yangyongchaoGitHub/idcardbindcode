@@ -209,6 +209,7 @@ public class ScanCode extends BascActivity implements DecodeResultListener, View
                             //有用户数据，但是没有绑定身份证
                             //跳转到绑定身份证界面
                             Intent intent = new Intent();
+                            localUserInfo = userInfo;
 
                             Bundle bundle = new Bundle();
                             bundle.putSerializable("userData", userInfo);
@@ -329,7 +330,9 @@ public class ScanCode extends BascActivity implements DecodeResultListener, View
         Log.i(TAG, "onActivityResult " + requestCode + " | " +resultCode);
         if (requestCode == 0 && resultCode == RESULT_OK) {
             String position = data.getStringExtra("position");
+            String idcard = data.getStringExtra("idcard");
             if ("1".equals(position)) {
+                localUserInfo.setIdcard(idcard);
                 showStartTime = System.currentTimeMillis();
                 iv_success.setVisibility(View.VISIBLE);
                 pushToEntrace(eucode);
@@ -425,7 +428,7 @@ public class ScanCode extends BascActivity implements DecodeResultListener, View
             public void onResponse(String response, int id) {
                 Log.i(TAG, "onResponse!!!!!!!!!!!!" + response);
                 PushResult pushResult  = new Gson().fromJson(response, PushResult.class);
-                if (pushResult.success.equals("true") || pushResult.success.equals("false")) {
+                if (pushResult != null && (pushResult.success.equals("true") || pushResult.success.equals("false"))) {
                     Log.i(TAG, "ok!!!!!!!!!!!!" + response);
                 }
             }
