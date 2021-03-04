@@ -2,7 +2,7 @@ package com.dataexpo.cbi.retrofitInf;
 
 public class URLs {
     //public static final String baseUrl = "https://auth.dataexpo.com.cn/";
-    public static final String baseUrl = "http://192.168.0.113:8090/";
+    public static final String baseUrl = "http://192.168.0.109:8090/";
 
     //private static final String postfix = ".do";
 
@@ -16,6 +16,9 @@ public class URLs {
 
     //绑定身份证到用户信息
     public static final String bindIdCardToUserUrl = "gate/bindIdCardToUser";
+
+    //上传一个门禁签到数据
+    public static final String uploadOneSignInUrl = "gate/uploadOneSignIn";
 
 
 }

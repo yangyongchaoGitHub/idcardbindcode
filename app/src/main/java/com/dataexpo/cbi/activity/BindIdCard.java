@@ -426,6 +426,7 @@ public class BindIdCard extends BascActivity implements View.OnClickListener {
     private void bindIdCardToUser() {
         ApiService apiService = mRetrofit.create(ApiService.class);
 
+        Log.i(TAG, "======== " + tv_user_info_idcard_value.getText().toString());
         Call<NetResult<String>> call = apiService.bindIdCardToUser(userInfo.getUid(),
                 tv_user_info_card_name_value.getText().toString(), tv_user_info_idcard_value.getText().toString()
         );
@@ -441,14 +442,18 @@ public class BindIdCard extends BascActivity implements View.OnClickListener {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(mContext, "欢迎光临", Toast.LENGTH_SHORT).show();
                         tv_user_info_name_value.setText("");
                         tv_user_info_idcard_value.setText("");
                         tv_user_info_card_name_value.setText("");
 
-                        Intent intent = getIntent();
-                        intent.putExtra("position", "1");
-                        setResult(RESULT_OK,intent);
+                        if (result.getCode().equals(200)) {
+                            Toast.makeText(mContext, "欢迎光临", Toast.LENGTH_SHORT).show();
+
+                            Intent intent = getIntent();
+                            intent.putExtra("position", "1");
+                            setResult(RESULT_OK, intent);
+
+                        }
 
                         BindIdCard.this.finish();
                     }

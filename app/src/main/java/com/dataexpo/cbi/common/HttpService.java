@@ -14,6 +14,7 @@ import java.util.HashMap;
 
 import okhttp3.CookieJar;
 import okhttp3.MediaType;
+import okhttp3.RequestBody;
 
 /**
  * 网络请求类
@@ -189,6 +190,31 @@ public class HttpService {
     }
 
     /**
+     * post方式提交键值对数据
+     *
+     * @param url
+     * @param json
+     * @param httpCallBack
+     */
+    public static RequestCall postWithParamsJson(Context context, String url,String json, int id, HttpCallback httpCallBack) {
+        RequestCall requestCall = OkHttpUtils
+                .postString()
+                .url(url)
+                .id(id)
+                .content(json)
+                .mediaType(MediaType.parse("application/json; charset=utf-8"))
+                //.params(getParams(context, hashMap))
+                //.headers(getJsonHeads(context))
+                .build()
+                .connTimeOut(10000)
+                .readTimeOut(10000)
+                .writeTimeOut(10000);
+        requestCall.execute(httpCallBack);
+        return requestCall;
+    }
+
+
+    /**
      * post方式提交文件
      *
      * @param url
@@ -332,6 +358,17 @@ public class HttpService {
         HashMap<String, String> heads = new HashMap<>();
         return heads;
     }
+
+    /**
+     * 获取头部
+     */
+    public static HashMap<String, String> getJsonHeads(Context context) {
+        HashMap<String, String> heads = new HashMap<>();
+        heads.put("Content-Type", "application/json;charset=UTF-8");
+        heads.put("Accept", "application/json");
+        return heads;
+    }
+
 
     /**
      * 获取传递参数

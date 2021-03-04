@@ -18,18 +18,35 @@ import android.widget.Toast;
 
 import com.dataexpo.cbi.BascActivity;
 import com.dataexpo.cbi.MyApplication;
+import com.dataexpo.cbi.common.HttpCallback;
+import com.dataexpo.cbi.common.HttpService;
+import com.dataexpo.cbi.common.URLs;
+import com.dataexpo.cbi.common.Utils;
+import com.dataexpo.cbi.pojo.MsgBean;
 import com.dataexpo.cbi.pojo.NetResult;
 import com.dataexpo.cbi.pojo.PdaUserInfo;
+import com.dataexpo.cbi.pojo.PushResult;
 import com.dataexpo.cbi.retrofitInf.ApiService;
+import com.google.gson.Gson;
 import com.idata.fastscandemo.R;
 import com.idata.ise.scanner.decoder.CamDecodeAPI;
 import com.idata.ise.scanner.decoder.DecodeResult;
 import com.idata.ise.scanner.decoder.DecodeResultListener;
+import com.zhy.http.okhttp.request.RequestCall;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
+import okhttp3.Headers;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -67,6 +84,12 @@ public class ScanCode extends BascActivity implements DecodeResultListener, View
     private volatile int showInt = SHOW_INIT;
     private volatile long showStartTime = System.currentTimeMillis();
     private volatile int running = 0;
+
+    private String eucode = "";
+    private PdaUserInfo localUserInfo;
+
+    private Integer count = 1;
+    private Map<Integer, PdaUserInfo> localUsersMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -191,14 +214,18 @@ public class ScanCode extends BascActivity implements DecodeResultListener, View
                             bundle.putSerializable("userData", userInfo);
                             intent.putExtras(bundle);
                             intent.setClass(mContext, BindIdCard.class);
+                            eucode = userInfo.getEucode();
 
                             startActivityForResult(intent, 0);
+                            //localUserInfo = userInfo;
                         } else {
                             // 有数据，身份证也绑定了
                             //提示直接进场
-                            Toast.makeText(mContext, "欢迎光临", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, "欢迎光临11", Toast.LENGTH_SHORT).show();
                             showStartTime = System.currentTimeMillis();
                             iv_success.setVisibility(View.VISIBLE);
+                            localUserInfo = userInfo;
+                            pushToEntrace(userInfo.getEucode());
                             et_qrcode.setText("");
                         }
                         et_qrcode.setText("");
@@ -224,6 +251,78 @@ public class ScanCode extends BascActivity implements DecodeResultListener, View
         });
     }
 
+    private void pushToEntrace(String code) {
+        Log.i(TAG, "push   onResponse!!!!! " + code);
+        String url = URLs.uploadOneSignIn;
+        final HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("eucode", code);
+        hashMap.put("time", Utils.formatTime(System.currentTimeMillis(), "yyyy-MM-dd HH:mm:ss"));
+        hashMap.put("expoId", expo_id);
+        hashMap.put("deviceKey", "pda");
+        hashMap.put("address", "pda");
+
+        HttpService.postWithParams(mContext, url, hashMap, 1,new HttpCallback() {
+            @Override
+            public void onError(okhttp3.Call call, Exception e, int id) {
+                Toast.makeText(mContext, "网络异常，请重新验证", Toast.LENGTH_SHORT).show();
+                Log.i(TAG, e.getMessage());
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                final MsgBean result = new Gson().fromJson(response, MsgBean.class);
+                Log.i(TAG, "签到返回：" + response);
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (result.code == 200) {
+                            pushToClient();
+                            localUserInfo = null;
+                        } else {
+
+                        }
+                    }
+                });
+            }
+        });
+
+//        ApiService apiService = mRetrofit.create(ApiService.class);
+//
+//        Call<NetResult<String>> call = apiService.uploadOneSignIn(code, new Date(), "pda",
+//                Integer.parseInt(expo_id), "入场口");
+//        Log.i(TAG, call.toString());
+//
+//        call.enqueue(new Callback<NetResult<String>>() {
+//            @Override
+//            public void onResponse(Call<NetResult<String>> call, Response<NetResult<String>> response) {
+//                final NetResult<String> result = response.body();
+//                if (result == null) {
+//                    return;
+//                }
+//                Log.i(TAG, "upload  onResponse!!!!! ");
+//                runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        String userInfo = result.getData();
+//                    }
+//                });
+//            }
+//
+//            @Override
+//            public void onFailure(Call<NetResult<String>> call, Throwable t) {
+//                Log.i(TAG, "onFailure" + t.toString());
+//                showInt = SHOW_ING;
+//                runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//
+//                    }
+//                });
+//            }
+//        });
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -233,6 +332,8 @@ public class ScanCode extends BascActivity implements DecodeResultListener, View
             if ("1".equals(position)) {
                 showStartTime = System.currentTimeMillis();
                 iv_success.setVisibility(View.VISIBLE);
+                pushToEntrace(eucode);
+                eucode = "";
             }
         }
     }
@@ -279,5 +380,104 @@ public class ScanCode extends BascActivity implements DecodeResultListener, View
         Log.i(TAG, "onStop!!!!!!!!!!!!");
         running = 1;
         super.onStop();
+    }
+
+    private void pushToClient() {
+        if (localUserInfo == null) {
+            return;
+        }
+        Log.i(TAG, "id: " + localUserInfo.getUid() + " name " + localUserInfo.getName() + " card: " +
+                localUserInfo.getIdcard() + " eucode " + localUserInfo.getEucode());
+        //url链接
+        String url= "http://poly.369zhan.com/sync/rest/visitors/210305/" + localUserInfo.getUid();
+        //String url= "http://192.168.0.109:8090/sync/rest/visitors/210305/" + "dataexpo" + localUserInfo.getUid();
+
+
+        int N = 999999;
+        Random rand = new Random();
+        int randNum = rand.nextInt(N);
+
+//        int max=100,min=1;
+//        long randomNum = System.currentTimeMillis();
+//        int ran3 = (int) (randomNum%(max-min)+min);
+        String cipherFactor = randNum+"";
+
+        String ts = System.currentTimeMillis()+"";
+
+        String cipherCheck = Utils.getMD5(cipherFactor+ts+"IF6X8VG91WE4D5J");//大写32 位
+        cipherCheck = cipherCheck.toUpperCase();
+
+        String data = "{\"cipherFactor\": \""+cipherFactor+"\", \"cipherCheck\": \""+cipherCheck+"\", \"ts\": "+ts+", \"data\":{\"visitor\" :{\"type\": \"STAFF\", \"name\":\"" +localUserInfo.getName() +"\",\"mobilePhone\":\"13699867500\",\"idNum\":\"" + localUserInfo.getIdcard() + "\",\"validateCode\":\"" + localUserInfo.getEucode() + "\", \"exhibition\":{\"id\":210305}},\"operator\":{\"id\":21030500011}}}";
+
+        Log.i(TAG, "data: " + data);
+
+        //TODO: 1
+        HashMap<String, String> map = new HashMap<>();
+        map.put("body", data);
+        RequestCall requestCall = HttpService.postWithParamsJson(mContext, url, data, 1, new HttpCallback() {
+
+            @Override
+            public void onError(okhttp3.Call call, Exception e, int id) {
+                Log.i(TAG, "onError!!!!!!!!!!!!" + e.toString() + e.getMessage());
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                Log.i(TAG, "onResponse!!!!!!!!!!!!" + response);
+                PushResult pushResult  = new Gson().fromJson(response, PushResult.class);
+                if (pushResult.success.equals("true") || pushResult.success.equals("false")) {
+                    Log.i(TAG, "ok!!!!!!!!!!!!" + response);
+                }
+            }
+        });
+        Log.i(TAG, requestCall.getRequest().toString());
+
+        //TODO: 2
+//        MediaType MEDIA_TYPE_JSON = MediaType.parse("application/json; charset=utf-8");
+//        RequestBody requestBody = RequestBody.create(MEDIA_TYPE_JSON, data);
+//
+//        Request requestPost = new Request.Builder().url(url).post(requestBody).build();
+//
+//        OkHttpClient okHttpClient = new OkHttpClient();
+//        okHttpClient.newCall(requestPost).enqueue(new okhttp3.Callback() {
+//            @Override
+//            public void onFailure(okhttp3.Call call, IOException e) {
+//                Log.i(TAG, "onError!!!!!!!!!!!!" + e.toString());
+//            }
+//
+//            @Override
+//            public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
+//                Log.i(TAG, "onResponse!!!!!!!!!!!!" + response);
+//            }
+//        });
+
+        //TODO: 3
+
+//        OkHttpClient okHttpClient = new OkHttpClient();
+//        RequestBody requestBody = new FormBody.Builder()
+//                .add("search", "Jurassic Park")
+//                .build();
+//        Request request = new Request.Builder()
+//                .url("https://en.wikipedia.org/w/index.php")
+//                .post(requestBody)
+//                .build();
+//
+//        okHttpClient.newCall(request).enqueue(new Callback() {
+//            @Override
+//            public void onFailure(Call call, IOException e) {
+//                Log.d(TAG, "onFailure: " + e.getMessage());
+//            }
+//
+//            @Override
+//            public void onResponse(Call call, Response response) throws IOException {
+//                Log.d(TAG, response.protocol() + " " +response.code() + " " + response.message());
+//                Headers headers = response.headers();
+//                for (int i = 0; i < headers.size(); i++) {
+//                    Log.d(TAG, headers.name(i) + ":" + headers.value(i));
+//                }
+//                Log.d(TAG, "onResponse: " + response.body().string());
+//            }
+//        });
+        //String rest = new HttpUtil().post(uirl, map, new BasicHeader("Content-Type", "application/json"));
     }
 }

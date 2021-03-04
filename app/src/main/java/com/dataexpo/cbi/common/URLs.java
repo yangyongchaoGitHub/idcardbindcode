@@ -2,7 +2,7 @@ package com.dataexpo.cbi.common;
 
 public class URLs {
     //private static final String DOMAIN = "https://auth.dataexpo.com.cn/";
-    private static final String DOMAIN = "http://192.168.0.113:8090/";
+    private static final String DOMAIN = "http://192.168.0.109:8090/";
 
     public static final String LOGIN = "https://actifchina.leoscn.com/api/index/qrVerify";
 
@@ -21,6 +21,8 @@ public class URLs {
     public static final String checkActive = DOMAIN + "gate/pdaCheckActive";
 
     public static final String pdaActiveSignUp = DOMAIN + "gate/pdaActiveSignUp";
+
+    public static final String uploadOneSignIn = DOMAIN + "gate/uploadOneSignIn";
 
     public static final String findCheckIn = "http://saas.dataexpo.com.cn/custom-access/entrance/checkSearchName.html";
 }

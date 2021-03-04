@@ -5,12 +5,14 @@ import com.dataexpo.cbi.pojo.ExpoInfo;
 import com.dataexpo.cbi.pojo.NetResult;
 import com.dataexpo.cbi.pojo.PdaUserInfo;
 
+import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 import static com.dataexpo.cbi.retrofitInf.URLs.*;
@@ -26,6 +28,12 @@ public interface ApiService {
     @GET(bindIdCardToUserUrl)
     Call<NetResult<String>> bindIdCardToUser(@Query("uid") int uid, @Query("name") String name,
                                                   @Query("idCard") String idCard);
+
+
+    @POST(uploadOneSignInUrl)
+    Call<NetResult<String>> uploadOneSignIn(@Query("eucode") String eucode, @Query("time") Date time,
+                                            @Query("deviceKey") String deviceKey, @Query("expoId") Integer expoId,
+                                            @Query("address") String address);
 
 //    @GET(bomDeviceUrl)
 //    Call<NetResult<List<Device>>> getBomDevice(@Query("bomId") int bomId);
