@@ -421,7 +421,7 @@ public class ScanCode extends BascActivity implements DecodeResultListener, View
 
             @Override
             public void onError(okhttp3.Call call, Exception e, int id) {
-                Log.i(TAG, "onError!!!!!!!!!!!!" + e.toString() + e.getMessage());
+                //Log.i(TAG, "onError!!!!!!!!!!!!" + e.toString() + e.getMessage());
             }
 
             @Override
